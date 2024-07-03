@@ -254,7 +254,10 @@ object Protocol {
 
     val (readerVersion, writerVersion, enabledFeatures) =
       minProtocolComponentsFromMetadata(spark, metadata)
-    Protocol(readerVersion, writerVersion).withFeatures(enabledFeatures)
+    Protocol(readerVersion, writerVersion)
+      .withFeatures(enabledFeatures)
+      .denormalize
+      .normalize
   }
 
   /**
@@ -363,7 +366,12 @@ object Protocol {
     val finalWriterVersion =
       Seq(1, writerVersionFromFeatures, writerVersionFromTableConfOpt.getOrElse(0)).max
 
-    (finalReaderVersion, finalWriterVersion, allEnabledFeatures)
+    val implicitFeatures = (readerVersionFromTableConfOpt, writerVersionFromTableConfOpt) match {
+      case (Some(r), Some(w)) => Protocol(r, w).implicitlySupportedFeatures
+      case _ => Set.empty
+    }
+
+    (finalReaderVersion, finalWriterVersion, allEnabledFeatures ++ implicitFeatures)
   }
 
   /**

@@ -86,9 +86,6 @@ trait DeltaColumnMappingBase extends DeltaLogging {
       RowIdMetadataStructField.isRowIdColumn(field) ||
       RowCommitVersion.MetadataStructField.isRowCommitVersionColumn(field)
 
-  def satisfiesColumnMappingProtocol(protocol: Protocol): Boolean =
-    protocol.isFeatureSupported(ColumnMappingTableFeature)
-
   /**
    * Allow NameMapping -> NoMapping transition behind a feature flag.
    * Otherwise only NoMapping -> NameMapping is allowed.
@@ -155,10 +152,6 @@ trait DeltaColumnMappingBase extends DeltaLogging {
         if ((newProtocol.supportsReaderFeatures && satisfiesWriterVersion) ||
             (newProtocol.supportsWriterFeatures && satisfiesReaderVersion)) {
           newProtocol = newProtocol.withFeature(ColumnMappingTableFeature)
-        }
-
-        if (!satisfiesColumnMappingProtocol(newProtocol)) {
-          throw DeltaErrors.changeColumnMappingModeOnOldProtocol(oldProtocol)
         }
       }
     }
