@@ -357,6 +357,12 @@
     ],
     "sqlState" : "XXKDS"
   },
+  "DELTA_CLONE_ALL_COORDINATED_COMMITS_CONFS_MUST_BE_OVERRIDEN" : {
+    "message" : [
+      "During CLONE, either all coordinated commits configurations i.e.\"delta.coordinatedCommits.commitCoordinator-preview\", \"delta.coordinatedCommits.commitCoordinatorConf-preview\" must be overridden or none of them."
+    ],
+    "sqlState" : "22003"
+  },
   "DELTA_CLONE_AMBIGUOUS_TARGET" : {
     "message" : [
       "",
@@ -365,6 +371,12 @@
       "<targetIdentifier>."
     ],
     "sqlState" : "42613"
+  },
+  "DELTA_CLONE_CONF_OVERRIDE_NOT_SUPPORTED" : {
+    "message" : [
+      "Configuration \"<configuration>\" cannot be overridden with CLONE command."
+    ],
+    "sqlState" : "0AKD0"
   },
   "DELTA_CLONE_UNSUPPORTED_SOURCE" : {
     "message" : [
